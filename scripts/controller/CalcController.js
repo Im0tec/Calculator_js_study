@@ -147,7 +147,14 @@ class CalcController{
     }
 
     getResult(){
-        return eval(this._operation.join(""));
+        try{
+            return eval(this._operation.join(""));
+        }
+        catch(e){
+            setTimeout(()=>{
+                this.setError();
+            }, 1);
+        }
     }
 
     calc(){
@@ -201,6 +208,7 @@ class CalcController{
 
         if(!lastNumber) 
             lastNumber = 0;
+        if (lastNumber.toString().length > 10) lastNumber = lastNumber.toString().substr(0, 10);
         this.displayCalc = lastNumber;
     }
 
@@ -350,6 +358,11 @@ class CalcController{
     }
     
     set displayCalc(value){
+        if(value.toString().length > 10){
+            this.setError();
+            alert('Estabeleceu o número máximo de elementos!');
+            return false;
+        }
         this._displayCalcEl.innerHTML = value;
     }
 
